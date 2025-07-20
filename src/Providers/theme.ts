@@ -24,8 +24,46 @@ const theme = createTheme({
     fontFamily: "Vazirmatn, Roboto, sans-serif",
   },
   shape: {
-    borderRadius: "6px",
+    borderRadius: "4px",
+  },
+  transitions: {
+    duration: {
+      standard: 300,
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiFab: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTable: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiSwitch: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiChip: {
+      defaultProps: {
+        size: "small",
+      },
+    },
   },
 });
 
 export default theme;
+

@@ -28,6 +28,7 @@ const Drawer = styled(MuiDrawer)({
 export default function SideMenu() {
   return (
     <Drawer
+      open={true}
       variant="permanent"
       sx={{
         display: { xs: "none", md: "block" },

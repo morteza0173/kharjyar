@@ -14,7 +14,7 @@ function DashboardLayout({
       <div className="pb-20 w-full">
         <div className="flex flex-col w-full">
           <Header />
-          <div className="p-4">
+          <div className="p-1 md:p-4">
             {children}
             <SyncBar />
           </div>

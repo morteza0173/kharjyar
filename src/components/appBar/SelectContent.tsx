@@ -16,6 +16,8 @@ import useGetAccount from "@/app/hooks/useGetAccount";
 import { Skeleton, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Account } from "@prisma/client";
+import { formatPrice } from "@/lib/formatPrice";
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -43,7 +45,7 @@ const typeLabels: Record<string, string> = {
 export default function SelectContent() {
   const pathname = usePathname();
 
-  const [company, setCompany] = useState("overall"); // مقدار اولیه
+  const [company, setCompany] = useState("overall");
 
   useEffect(() => {
     if (pathname === "/dashboard/create-account") {
@@ -75,6 +77,10 @@ export default function SelectContent() {
   const { data: accounts, isPending } = useGetAccount();
   const { accountTypes } = useGetAccountType();
 
+  function calculateTotalBalance(accounts: Account[]): number {
+    return accounts.reduce((total, account) => total + account.balance, 0);
+  }
+
   if (isPending) {
     return (
       <Select
@@ -97,8 +103,37 @@ export default function SelectContent() {
       value={company}
       onChange={handleChange}
       displayEmpty
-      inputProps={{ "aria-label": "Select company" }}
       fullWidth
+      MenuProps={{
+        disableScrollLock: true,
+      }}
+      renderValue={(selected) => {
+        if (selected === "create-account") return "حساب جدید";
+        const account = accounts?.find((a) => a.id === selected);
+        return (
+          account?.name || (
+            <MenuItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <DevicesRoundedIcon sx={{ fontSize: "1rem" }} />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <Typography variant="subtitle1">همه حساب ها</Typography>
+                }
+                secondary={
+                  accounts && (
+                    <Typography variant="caption" color="text.secondary">
+                      {formatPrice(calculateTotalBalance(accounts))}
+                    </Typography>
+                  )
+                }
+              />
+            </MenuItem>
+          )
+        );
+      }}
       sx={{
         maxHeight: 56,
         width: 215,
@@ -112,14 +147,6 @@ export default function SelectContent() {
           pl: 1,
         },
       }}
-      MenuProps={{
-        PaperProps: {
-          sx: {
-            mt: 1,
-            maxHeight: 560,
-          },
-        },
-      }}
     >
       <MenuItem value={"overall"}>
         <ListItemAvatar>
@@ -127,7 +154,16 @@ export default function SelectContent() {
             <DevicesRoundedIcon sx={{ fontSize: "1rem" }} />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="همه حساب‌ها" secondary="نمایش خرج و مخارج" />
+        <ListItemText
+          primary={<Typography variant="subtitle1">همه حساب ها</Typography>}
+          secondary={
+            accounts && (
+              <Typography variant="caption" color="text.secondary">
+                {formatPrice(calculateTotalBalance(accounts))}
+              </Typography>
+            )
+          }
+        />
       </MenuItem>
       {isPending ? (
         <Skeleton

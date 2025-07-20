@@ -7,14 +7,26 @@ import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
 export const mainListItems = [
-  { text: "صفحه اصلی", icon: <HomeRoundedIcon /> },
-  { text: "مدیریت حساب‌ها", icon: <PeopleRoundedIcon /> },
-  { text: "آخرین تراکنش‌ها", icon: <AnalyticsRoundedIcon /> },
-  { text: "هزینه های ثابت", icon: <AssignmentRoundedIcon /> },
+  { text: "صفحه اصلی", icon: <HomeRoundedIcon />, href: "/dashboard" },
+  {
+    text: "مدیریت حساب‌ها",
+    icon: <PeopleRoundedIcon />,
+    href: "/dashboard/accounts",
+  },
+  {
+    text: "آخرین تراکنش‌ها",
+    icon: <AnalyticsRoundedIcon />,
+    href: "/",
+  },
+  {
+    text: "هزینه های ثابت",
+    icon: <AssignmentRoundedIcon />,
+    href: "/",
+  },
 ];
 
 export const secondaryListItems = [
-  { text: "تنظیمات", icon: <SettingsRoundedIcon /> },
-  { text: "درباره ی من", icon: <InfoRoundedIcon /> },
-  { text: "امکانات سرویس", icon: <HelpRoundedIcon /> },
+  { text: "تنظیمات", icon: <SettingsRoundedIcon />, href: "/" },
+  { text: "درباره ی من", icon: <InfoRoundedIcon />, href: "/" },
+  { text: "امکانات سرویس", icon: <HelpRoundedIcon />, href: "/" },
 ];

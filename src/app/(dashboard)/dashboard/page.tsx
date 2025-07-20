@@ -1,6 +1,9 @@
 "use client";
 
 import useGetAccount from "@/app/hooks/useGetAccount";
+import { AccountListColumns } from "@/components/tableComponent/columns/AccountListColumns";
+import { ReusableDataTable } from "@/components/tableComponent/ReusableDataTable";
+import { AccountToolbar } from "@/components/tableComponent/toolbar/AccountToolbar";
 import {
   Box,
   Card,
@@ -10,18 +13,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 function Page() {
-  const { data, isPending } = useGetAccount();
-  const router = useRouter();
+  const query = useGetAccount();
 
-  useEffect(() => {
-    if (data?.length === 0) {
-      router.push("/dashboard/create-account");
-    }
-  }, [data, router]);
+  const { data, isPending } = query;
 
   return (
     <div className="flex flex-col md:flex-row gap-2 items-center ">
@@ -89,6 +85,14 @@ function Page() {
             )}
           </Grid>
         </Grid>
+        <ReusableDataTable
+          query={query || []}
+          columns={AccountListColumns}
+          mobileVisibility={{ lessonName: false, remainingTime: false }}
+          desktopVisibility={{ lessonName: true, remainingTime: true }}
+        >
+          {(table) => <AccountToolbar table={table} />}
+        </ReusableDataTable>
       </Box>
     </div>
   );

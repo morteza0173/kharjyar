@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+html {
+  overflow-y: scroll;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

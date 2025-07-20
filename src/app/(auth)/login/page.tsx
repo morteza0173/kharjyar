@@ -4,9 +4,9 @@ import { Button, Card, CardContent, Divider } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { loginWithGoogle } from "../../actions/loginAction";
-import LoginCardHeader from "@/components/login/LoginCardHeader";
-import LoginForm from "@/components/login/LoginForm";
-import AuthSideInfo from "@/components/login/AuthSideInfo";
+import LoginCardHeader from "@/components/auth/LoginCardHeader";
+import LoginForm from "@/components/auth/LoginForm";
+import AuthSideInfo from "@/components/auth/AuthSideInfo";
 
 function LoginPage() {
   return (

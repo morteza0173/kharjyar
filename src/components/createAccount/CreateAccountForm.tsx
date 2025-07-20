@@ -1,11 +1,11 @@
 import { createAccountSchema, CreateAccountSchema } from "@/types/schema";
 import { Stack, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import RHFTypeSelector from "./RHFTypeSelector";
+import RHFTypeSelector from "../ui/input/RHFTypeSelector";
 import SubmitButton from "../ui/SubmitButton";
 import { accountTypeOption } from "@/types/AccountTypeOption";
 import z from "zod";
-import RHFNumberInput from "./RHFNumberInput";
+import RHFNumberInput from "../ui/input/RHFNumberInput";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Account, AccountType } from "@prisma/client";
@@ -38,9 +38,7 @@ export function CreateAccountForm() {
     formData.append("type", data.type);
     formData.append("balance", data.balance.toString());
     formData.append("id", data.id);
-
-    console.log("FORM DATA:", [...formData.entries()]);
-
+    
     const res = await fetch("/api/account/create", {
       method: "POST",
       body: formData,

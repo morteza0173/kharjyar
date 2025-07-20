@@ -28,3 +28,30 @@ export const DefaultValuesCreateAccount: Partial<CreateAccountSchema> = {
   type: undefined,
   balance: 0,
 };
+
+export const registerSchema = z.object({
+  email: z
+    .string()
+    .min(1, "ایمیل را وارد کنید")
+    .email({ message: "ایمیل صحیح نمیباشد" }),
+  password: z
+    .string()
+    .min(8, { message: "رمز عبور باید حداقل ۸ حرف باشد" })
+    .refine((val) => /[A-Z]/.test(val), {
+      message: "باید حداقل یک حرف بزرگ داشته باشد",
+    })
+    .refine((val) => /[0-9]/.test(val), {
+      message: "باید حداقل یک عدد داشته باشد",
+    })
+    .refine((val) => /[@$!%*?&]/.test(val), {
+      message: "باید حداقل یک علامت خاص (مثل @ یا ! یا ...) داشته باشد",
+    }),
+  name: z.string().min(3, "نام باید حداقل 3 حرف باشد").max(12, "حداکثر 12 حرف"),
+});
+export type RegisterSchema = z.infer<typeof registerSchema>;
+
+export const DefaultValuesRegisterSchema: Partial<RegisterSchema> = {
+  name: "",
+  email: "",
+  password: "",
+};

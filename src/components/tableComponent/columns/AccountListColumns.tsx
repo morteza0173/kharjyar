@@ -48,7 +48,7 @@ export const AccountListColumns: ColumnDef<Account>[] = [
   },
   {
     accessorKey: "name",
-    header: ({ column }) => <p>نام حساب</p>,
+    header: () => <p>نام حساب</p>,
     cell: ({ row }) => (
       <div className="max-w-[200px] md:w-auto capitalize  flex gap-2 items-center">
         <div>
@@ -65,7 +65,7 @@ export const AccountListColumns: ColumnDef<Account>[] = [
   },
   {
     accessorKey: "type",
-    header: ({ column }) => <p>نوع حساب</p>,
+    header: () => <p>نوع حساب</p>,
     cell: ({ row }) => {
       return (
         <div className="flex xl:w-full items-center gap-1 flex-wrap">
@@ -82,7 +82,7 @@ export const AccountListColumns: ColumnDef<Account>[] = [
   },
   {
     accessorKey: "balance",
-    header: ({ column }) => <p>موجودی</p>,
+    header: () => <p>موجودی</p>,
     cell: ({ row }) => {
       return (
         <div className="flex xl:w-full items-center gap-1 flex-wrap">

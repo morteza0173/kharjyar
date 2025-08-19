@@ -46,7 +46,7 @@ function RegisterForm() {
     mutationKey: ["register"],
     mutationFn: handlerRegister,
     onSuccess: () => {
-      router.push("/dashboard");
+      router.push("/login");
     },
     onError: (error) => {
       setFormError(error.message);

@@ -1,6 +1,7 @@
 import { translateErrors } from "@/lib/dataLabel";
 import { prisma } from "@/lib/db";
 import { createClientWithServiceRole } from "@/lib/supabaseClient";
+import { CategoryType } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -36,16 +37,30 @@ export async function POST(req: Request) {
   }
 
   try {
-    const user = await prisma.user.create({
-      data: {
-        id: userId,
-        email,
-        name,
-        CompleteRegistration: true,
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          id: userId,
+          email,
+          name,
+          CompleteRegistration: true,
+        },
+      });
+      const defaultCategories = [
+        { name: "حقوق", type: CategoryType.INCOME, userId: userId },
+        { name: "هدیه", type: CategoryType.INCOME, userId: userId },
+        { name: "خرید", type: CategoryType.EXPENSE, userId: userId },
+        { name: "غذا", type: CategoryType.EXPENSE, userId: userId },
+        { name: "حمل‌ونقل", type: CategoryType.EXPENSE, userId: userId },
+      ];
+      await tx.category.createMany({
+        data: defaultCategories,
+      });
+
+      return user;
     });
 
-    return NextResponse.json({ user }, { status: 201 });
+    return NextResponse.json({ result }, { status: 201 });
   } catch {
     return NextResponse.json(
       { error: "خطا در ذخیره در دیتابیس" },

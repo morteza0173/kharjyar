@@ -9,14 +9,14 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 export const mainListItems = [
   { text: "صفحه اصلی", icon: <HomeRoundedIcon />, href: "/dashboard" },
   {
-    text: "مدیریت حساب‌ها",
+    text: "حساب‌ها",
     icon: <PeopleRoundedIcon />,
     href: "/dashboard/accounts",
   },
   {
-    text: "آخرین تراکنش‌ها",
+    text: "تراکنش‌ها",
     icon: <AnalyticsRoundedIcon />,
-    href: "/",
+    href: "/dashboard/transactions",
   },
   {
     text: "هزینه های ثابت",

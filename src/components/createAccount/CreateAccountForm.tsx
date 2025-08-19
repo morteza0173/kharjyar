@@ -1,3 +1,4 @@
+"use client";
 import { createAccountSchema, CreateAccountSchema } from "@/types/schema";
 import { Stack, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
@@ -6,11 +7,20 @@ import SubmitButton from "../ui/SubmitButton";
 import { accountTypeOption } from "@/types/AccountTypeOption";
 import z from "zod";
 import RHFNumberInput from "../ui/input/RHFNumberInput";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Account, AccountType } from "@prisma/client";
+import { Account } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import useUserAuth from "@/app/hooks/useUserAuth";
+import { indexeddb } from "@/lib/indexeddb";
+import { useEffect, useState } from "react";
+
+export async function savePendingAccount(account: Account[]) {
+  await indexeddb.pendingAccount.bulkAdd(account);
+}
+
+export async function removePendingAccount(id: string) {
+  await indexeddb.pendingAccount.delete(id);
+}
 
 export function CreateAccountForm() {
   const {
@@ -19,73 +29,38 @@ export function CreateAccountForm() {
     handleSubmit,
   } = useFormContext<CreateAccountSchema>();
 
-  const { userData } = useUserAuth();
+  const [userId, setUserId] = useState("0");
 
   const router = useRouter();
 
   const queryClient = useQueryClient();
 
-  const CreateAccount = async (data: {
-    name: string;
-    description: string;
-    type: AccountType;
-    balance: number;
-    id: string;
-  }) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("type", data.type);
-    formData.append("balance", data.balance.toString());
-    formData.append("id", data.id);
-    
-    const res = await fetch("/api/account/create", {
-      method: "POST",
-      body: formData,
-    });
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setUserId(userId);
+    }
+  }, []);
 
-    const response = await res.json();
-    if (!res.ok) throw new Error(response.error || "خطا در ساخت حساب");
-    return response;
-  };
-
-  const mutate = useMutation({
-    mutationKey: ["createAccount"],
-    mutationFn: CreateAccount,
-    onMutate: async (newAccount) => {
-      await queryClient.cancelQueries({ queryKey: ["accounts", userData?.id] });
-
-      const fakeAccount: Account = {
-        ...newAccount,
-        id: newAccount.id,
-        userId: userData?.id as string,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const PrevAccounts = queryClient.getQueryData(["accounts", userData?.id]);
-      queryClient.setQueryData<Account[]>(["accounts", userData?.id], (old) => [
-        ...(old ?? []),
-        fakeAccount,
-      ]);
-
-      router.push("/dashboard");
-
-      return { PrevAccounts };
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-    retry: 1,
-  });
-
-  const onSubmit = (data: z.infer<typeof createAccountSchema>) => {
+  const onSubmit = async (data: z.infer<typeof createAccountSchema>) => {
     const newId = uuidv4();
-    const newData = {
+    const indexeddbData: Account = {
       ...data,
       id: newId,
+      userId: userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      description: data.description || null,
     };
-    mutate.mutate(newData);
+
+    await savePendingAccount([indexeddbData]);
+
+    queryClient.setQueryData<Account[]>(["accounts", userId], (old = []) => [
+      ...old,
+      indexeddbData,
+    ]);
+
+    router.push("/dashboard");
   };
 
   return (
@@ -105,11 +80,7 @@ export function CreateAccountForm() {
           helperText={errors.description?.message}
         />
         <RHFNumberInput label="موجودی اولیه" />
-        <SubmitButton
-          isPending={mutate.isPending}
-          text="ساخت حساب"
-          disabled={mutate.isPending}
-        />
+        <SubmitButton text="ساخت حساب" />
       </Stack>
     </form>
   );

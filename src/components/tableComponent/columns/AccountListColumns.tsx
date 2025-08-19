@@ -1,6 +1,6 @@
 "use client";
 
-import { dataLabels } from "@/lib/dataLabel";
+import { accountTypeLabels } from "@/lib/dataLabel";
 import { formatPriceWithCommaFa } from "@/lib/formatPrice";
 import { Badge, Checkbox } from "@mui/material";
 import { Account, AccountType } from "@prisma/client";
@@ -70,7 +70,7 @@ export const AccountListColumns: ColumnDef<Account>[] = [
       return (
         <div className="flex xl:w-full items-center gap-1 flex-wrap">
           <Badge className="capitalize text-xs">
-            {dataLabels[row.getValue("type") as AccountType]}
+            {accountTypeLabels[row.getValue("type") as AccountType]}
           </Badge>
         </div>
       );

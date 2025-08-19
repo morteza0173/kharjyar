@@ -6,7 +6,7 @@ import { TextField } from "@mui/material";
 import { DataTableFacetedFilter } from "../DataTableFacetedFilter";
 import ResetFilterButton from "../ResetFilterButton";
 import DataTablePriceRangeFilter from "../DataTablePriceRangeFilter";
-import { dataLabels } from "@/lib/dataLabel";
+import { accountTypeLabels } from "@/lib/dataLabel";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -21,7 +21,7 @@ export function AccountToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
         account.type,
         {
           value: account.type,
-          label: dataLabels[account.type],
+          label: accountTypeLabels[account.type],
         },
       ])
     ).values(),

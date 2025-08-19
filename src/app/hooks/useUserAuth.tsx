@@ -2,10 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import GetUserInfo from "../actions/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useUserAuth = () => {
   const router = useRouter();
+  const [localUserId, setLocalUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedId = localStorage.getItem("userId");
+    setLocalUserId(storedId);
+  }, []);
 
   const {
     isPending: isUserPending,
@@ -17,13 +23,21 @@ const useUserAuth = () => {
   });
 
   useEffect(() => {
+    if (userData?.id) {
+      localStorage.setItem("userId", userData.id);
+      setLocalUserId(userData.id);
+    }
+  }, [userData]);
+
+  useEffect(() => {
     if (!isUserPending) {
-      if (!userData) {
-        return router.push("/login");
+      if (!localUserId && !userData) {
+        router.push("/login");
       }
     }
-  }, [isUserPending, userData, router]);
+  }, [isUserPending, localUserId, userData, router]);
 
-  return { isUserPending, isUserError, userData };
+  return { isUserPending, isUserError, userData, localUserId };
 };
+
 export default useUserAuth;

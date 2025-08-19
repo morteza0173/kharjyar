@@ -1,44 +1,17 @@
 "use client";
 
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  Fab,
-} from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
 import { mobileMenuItems } from "@/items/mobileMenuItems";
-import AddIcon from "@mui/icons-material/Add";
+import { usePathname } from "next/navigation";
 
 const MobileMenu = () => {
-  const [bottomNavValue, setBottomNavValue] = useState(0);
-  const middleIndex = Math.floor(mobileMenuItems.length / 2);
+  const pathname = usePathname();
 
   return (
     <Box sx={{ display: { md: "none" } }}>
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 28,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 1400,
-        }}
-      >
-        <Fab
-          color="success"
-          aria-label="add"
-          sx={{ width: 56, height: 56 }}
-          href="/add-transaction"
-          component={Link}
-        >
-          <AddIcon />
-        </Fab>
-      </Box>
       <BottomNavigation
-        value={bottomNavValue}
-        onChange={(event, newValue) => setBottomNavValue(newValue)}
+        value={pathname}
         showLabels
         sx={{
           height: 56,
@@ -46,21 +19,11 @@ const MobileMenu = () => {
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 1300,
+          zIndex: 40,
           boxShadow: "0 -4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
         {mobileMenuItems.map((item, index) => {
-          if (index === middleIndex)
-            return (
-              <BottomNavigationAction
-                key={index}
-                icon={null}
-                label=""
-                disabled
-                sx={{ width: 56 }}
-              />
-            );
           return (
             <BottomNavigationAction
               key={index}
@@ -68,6 +31,7 @@ const MobileMenu = () => {
               icon={item.icon}
               component={Link}
               href={item.link}
+              value={item.link}
             />
           );
         })}

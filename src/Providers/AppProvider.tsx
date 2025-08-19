@@ -10,6 +10,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "../lib/store/store";
 
 interface InsertedStyle {
   name: string;
@@ -29,7 +31,7 @@ export default function AppProvider({ children }: RootStyleRegistryProps) {
   }>(() => {
     const cache = createCache({
       key: "css",
-      stylisPlugins: [prefixer, rtlPlugin], // اضافه کردن rtl
+      stylisPlugins: [prefixer, rtlPlugin],
     });
     cache.compat = true;
 
@@ -89,14 +91,19 @@ export default function AppProvider({ children }: RootStyleRegistryProps) {
   });
 
   return (
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
-        </QueryClientProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <ReduxProvider store={store}>
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <ReactQueryDevtools
+              initialIsOpen={false}
+              buttonPosition="top-left"
+            />
+          </QueryClientProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </ReduxProvider>
   );
 }

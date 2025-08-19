@@ -5,7 +5,12 @@ const toPersianDigits = (value: string | number): string => {
 export const formatPrice = (value: number): string => {
   let formatted: string;
 
-  if (value >= 1_000_000) {
+  if (value >= 1_000_000_000) {
+    const amount = (value / 1_000_000_000).toFixed(
+      value % 1_000_000_000 === 0 ? 0 : 1
+    );
+    formatted = `${toPersianDigits(amount)} میلیارد تومان`;
+  } else if (value >= 1_000_000) {
     const amount = (value / 1_000_000).toFixed(value % 1_000_000 === 0 ? 0 : 1);
     formatted = `${toPersianDigits(amount)} میلیون تومان`;
   } else if (value >= 1_000) {
@@ -17,7 +22,6 @@ export const formatPrice = (value: number): string => {
 
   return formatted;
 };
-
 
 export const formatPriceWithCommaFa = (value: number): string => {
   const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];

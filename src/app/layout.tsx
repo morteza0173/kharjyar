@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
 import AppProvider from "@/Providers/AppProvider";
+import SyncProvider from "@/Providers/SyncProvider";
 
 const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
-  subsets: ["latin"],
+  subsets: ["arabic"],
 });
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en" dir="rtl">
       <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body className={`${vazirmatn.variable} antialiased`}>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <SyncProvider>{children}</SyncProvider>
+        </AppProvider>
       </body>
     </html>
   );

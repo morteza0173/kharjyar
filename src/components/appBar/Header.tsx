@@ -12,8 +12,9 @@ export default function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "background.paper",
+        backgroundColor: "transparent",
         width: "100%",
+        boxShadow: "none",
       }}
     >
       <Toolbar>

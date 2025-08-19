@@ -36,3 +36,10 @@ input:-webkit-autofill {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+.testsvg {
+  -webkit-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.3));
+  -moz-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.3));
+  -ms-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.3));
+  -o-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.3));
+}

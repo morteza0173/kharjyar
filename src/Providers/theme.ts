@@ -1,3 +1,4 @@
+import { colors } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -8,16 +9,26 @@ const theme = createTheme({
       default: "#f5f5f5",
     },
     primary: {
-      main: "#3282B8",
-      dark: "#0F4C75",
-      light: "#BBE1FA",
-      contrastText: "#F7F7F7",
+      main: colors.orange[300],
+      light: colors.orange[100],
     },
     secondary: {
       main: "#526D82",
       dark: "#27374D",
       light: "#9DB2BF",
       contrastText: "#DDE6ED",
+    },
+    success: {
+      light: "#93DA97",
+      main: "#4CAF50",
+      dark: "#388E3C",
+      contrastText: "#FFFFFF",
+    },
+    error: {
+      light: "#FFB4B4",
+      main: "#F44336",
+      dark: "#D32F2F",
+      contrastText: "#FFFFFF",
     },
   },
   typography: {
@@ -66,4 +77,3 @@ const theme = createTheme({
 });
 
 export default theme;
-

@@ -33,6 +33,8 @@ import {
 } from "@mui/material";
 import { WarningAmber } from "@mui/icons-material";
 import { DataTablePagination } from "./DataTablePagination";
+import theme from "@/Providers/theme";
+import { lighten } from "@mui/material/styles";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -105,13 +107,16 @@ export function ReusableDataTable<TData, TValue>({
 
   return (
     <div className="space-y-2">
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ borderRadius: 5 }}>
         {children?.(table)}
         <div className="overflow-y-auto rounded-md">
           <Table sx={{ minWidth: 300 }} size="small" aria-label="a dense table">
             <TableHead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-emerald-50">
+                <TableRow
+                  key={headerGroup.id}
+                  sx={{ bgcolor: lighten(theme.palette.primary.light, 0.8) }}
+                >
                   {headerGroup.headers.map((header) => (
                     <TableCell
                       className="px-1 md:px-2 lg:px-4 py-2 text-xs md:text-sm"

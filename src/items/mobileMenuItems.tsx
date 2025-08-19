@@ -6,9 +6,12 @@ import {
 } from "@mui/icons-material";
 
 export const mobileMenuItems = [
-  { label: "صفحه اصلی", icon: <HomeFilled />, link: "/dashboard" },
+  { label: "خانه", icon: <HomeFilled />, link: "/dashboard" },
   { label: "حساب‌ها", icon: <PeopleRounded />, link: "/dashboard/accounts" },
-  { label: "وسط برای افزودن تراکنش", icon: <PeopleRounded />, link: "/" },
-  { label: "تراکنش‌ها", icon: <AnalyticsRounded />, link: "/test2" },
+  {
+    label: "تراکنش‌ها",
+    icon: <AnalyticsRounded />,
+    link: "/dashboard/transactions",
+  },
   { label: "سایر", icon: <ViewCompact />, link: "/test2" },
 ];

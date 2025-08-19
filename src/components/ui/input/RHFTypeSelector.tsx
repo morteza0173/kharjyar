@@ -37,7 +37,7 @@ export default function RHFTypeSelector({
               bgcolor: isSelected ? "primary.light" : "background.paper",
               transition: "all 0.3s",
               "&:hover": {
-                borderColor: "primary.main",
+                borderColor: "primary.light",
               },
             }}
           >

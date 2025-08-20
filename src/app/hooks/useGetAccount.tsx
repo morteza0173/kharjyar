@@ -13,8 +13,12 @@ export async function getAccount(): Promise<Account[]> {
 }
 
 export async function saveAccount(account: Account[]) {
-  await indexeddb.account.clear();
-  await indexeddb.account.bulkAdd(account);
+  if (!account || account.length === 0) return;
+  try {
+    await indexeddb.account.bulkPut(account);
+  } catch (error) {
+    console.error("خطا در ذخیره‌سازی حساب‌ها در IndexedDB:", error);
+  }
 }
 
 const useGetAccount = () => {
@@ -37,9 +41,13 @@ const useGetAccount = () => {
     queryKey: ["accounts", userId],
     queryFn: async () => {
       if (!userId) throw new Error("User ID not found");
-      const data = await getAccountByUserId(userId);
-      await saveAccount(data);
-      return data;
+      try {
+        const data = await getAccountByUserId(userId);
+        await saveAccount(data);
+        return data;
+      } catch {
+        throw new Error("خطا در دریافت حساب‌ها");
+      }
     },
     enabled: !!userId,
   });

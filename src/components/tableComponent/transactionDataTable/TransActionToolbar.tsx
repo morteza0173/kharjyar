@@ -4,7 +4,6 @@ import { DataTableFacetedFilter } from "../DataTableFacetedFilter";
 import useGetTransaction from "@/app/hooks/useGetTransaction";
 import { transactionTypeLabels } from "@/lib/dataLabel";
 import useGetAccount from "@/app/hooks/useGetAccount";
-import theme from "@/Providers/theme";
 import { AddCircleOutline } from "@mui/icons-material";
 
 interface DataTableToolbarProps<TData> {
@@ -14,8 +13,7 @@ interface DataTableToolbarProps<TData> {
 export function TransActionToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const { data: transActionData } =
-    useGetTransaction();
+  const { data: transActionData } = useGetTransaction();
   const { data: AccountData } = useGetAccount();
 
   const transactionType = [
@@ -52,7 +50,7 @@ export function TransActionToolbar<TData>({
     <Box>
       <Box
         display={"flex"}
-        flexDirection={{ xs: "column-reverse", lg: "row" }}
+        flexDirection={{ xs: "column-reverse", md: "row" }}
         alignItems={"center"}
         justifyContent={"space-between"}
         padding={2}
@@ -74,19 +72,14 @@ export function TransActionToolbar<TData>({
         </Box>
         <Box
           display={"flex"}
-          flexDirection={{ xs: "column-reverse", lg: "row" }}
+          flexDirection={{ xs: "column-reverse", md: "row" }}
           sx={{ width: "100%" }}
           justifyContent={"end"}
         >
           <Button
             variant="contained"
-            sx={{
-              bgcolor: "white",
-              color: theme.palette.text.primary,
-              border: "1px solid black",
-              boxShadow: "none",
-              width: { xs: "100%", lg: "auto" },
-            }}
+            disableRipple
+            disableElevation
             endIcon={<AddCircleOutline />}
           >
             افزودن تراکنش

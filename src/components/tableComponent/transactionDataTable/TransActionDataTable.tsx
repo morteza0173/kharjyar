@@ -22,6 +22,7 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { Fragment, useEffect, useState } from "react";
 import type { Table as ReactTableInstance } from "@tanstack/react-table";
 import {
+  Box,
   Button,
   CircularProgress,
   Table,
@@ -34,6 +35,18 @@ import {
 import { WarningAmber } from "@mui/icons-material";
 import { DataTablePagination } from "../DataTablePagination";
 import { motion, AnimatePresence } from "framer-motion";
+import { CategoryType } from "@prisma/client";
+
+interface TransactionRow {
+  id: string;
+  type: CategoryType;
+  amount: number;
+  description: string | null;
+  date: Date;
+  userId: string;
+  categoryId: string;
+  accountId: string;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,7 +60,7 @@ interface DataTableProps<TData, TValue> {
   desktopVisibility?: VisibilityState;
   children?: (table: ReactTableInstance<TData>) => React.ReactNode;
 }
-export function TransActionDataTable<TData, TValue>({
+export function TransActionDataTable<TData extends TransactionRow, TValue>({
   columns,
   query,
   mobileVisibility,
@@ -94,9 +107,9 @@ export function TransActionDataTable<TData, TValue>({
       expanded,
     },
     defaultColumn: {
-      size: 200, //starting column size
-      minSize: 50, //enforced during column resizing
-      maxSize: 500, //enforced during column resizing
+      size: 200,
+      minSize: 50,
+      maxSize: 500,
     },
     columnResizeDirection: "rtl",
     enableRowSelection: true,
@@ -148,53 +161,100 @@ export function TransActionDataTable<TData, TValue>({
             </TableHead>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <Fragment key={row.id}>
-                    <TableRow
-                      data-state={row.getIsSelected() && "selected"}
-                      className="even:bg-gray-50 odd:bg-[#ffffff]"
-                      onClick={() => row.toggleExpanded()}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      {row.getVisibleCells().map((cell) => (
+                table.getRowModel().rows.map((row) => {
+                  const type = row.original.type;
+                  const totalSize = table
+                    .getVisibleLeafColumns()
+                    .reduce((sum, col) => sum + col.getSize(), 0);
+                  const colWidths = table
+                    .getVisibleLeafColumns()
+                    .map((col) => `${(col.getSize() / totalSize) * 100}%`);
+                  return (
+                    <Fragment key={row.id}>
+                      <TableRow
+                        data-state={row.getIsSelected() && "selected"}
+                        onClick={() => row.toggleExpanded()}
+                        sx={{ cursor: "pointer" }}
+                      >
                         <TableCell
-                          className="px-1 md:px-2 lg:px-4 py-2 text-xs md:text-sm"
-                          key={cell.id}
+                          colSpan={row.getVisibleCells().length}
+                          sx={{
+                            p: 0,
+                          }}
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-
-                    <AnimatePresence initial={false} mode="wait">
-                      {row.getIsExpanded() && (
-                        <TableRow className="bg-gray-100">
-                          <TableCell
-                            colSpan={row.getVisibleCells().length}
-                            sx={{ padding: 0 }}
+                          <Box
+                            sx={{
+                              display: "grid",
+                              gridTemplateColumns: colWidths.join(" "),
+                              alignItems: "center",
+                              borderRadius: "8px",
+                              borderLeft:
+                                type === "EXPENSE"
+                                  ? "8px solid red"
+                                  : "8px solid green",
+                            }}
                           >
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.4, ease: "easeInOut" }}
-                              style={{ overflow: "hidden" }}
+                            {row.getVisibleCells().map((cell) => (
+                              <Box
+                                key={cell.id}
+                                sx={{
+                                  px: 2,
+                                  py: 2,
+                                  fontSize: { xs: "0.75rem", md: "0.875rem" },
+                                  textAlign: "left",
+                                  minWidth: 0,
+                                }}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </Box>
+                            ))}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+
+                      <AnimatePresence initial={false} mode="wait">
+                        {row.getIsExpanded() && (
+                          <TableRow>
+                            <TableCell
+                              colSpan={row.getVisibleCells().length}
+                              sx={{ padding: 0 }}
                             >
-                              <div className="p-3 text-xs md:text-sm text-gray-700">
-                                <strong>جزئیات بیشتر:</strong> اطلاعات اضافی این بخش قرار میگیرد
-                                <span className="font-bold px-1"></span>
-                                است.
-                              </div>
-                            </motion.div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </AnimatePresence>
-                  </Fragment>
-                ))
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{
+                                  duration: 0.4,
+                                  ease: "easeInOut",
+                                }}
+                                style={{ overflow: "hidden" }}
+                              >
+                                <Box
+                                  sx={{
+                                    p: 3,
+                                    bgcolor:
+                                      row.original.type === "EXPENSE"
+                                        ? "rgb(255, 0, 0 , 0.1)"
+                                        : "rgb(0, 255, 0 , 0.1)",
+                                    borderRadius: 2,
+                                  }}
+                                >
+                                  <strong>جزئیات بیشتر:</strong> اطلاعات اضافی
+                                  این بخش قرار میگیرد
+                                  <span className="font-bold px-1"></span>
+                                  است.
+                                </Box>
+                              </motion.div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </AnimatePresence>
+                    </Fragment>
+                  );
+                })
               ) : (
                 <TableRow>
                   <TableCell

@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Table } from "@tanstack/react-table";
-import theme from "@/Providers/theme";
 import { KeyboardArrowDown } from "@mui/icons-material";
 
 interface Option {
@@ -63,15 +62,9 @@ export function DataTableFacetedFilter<TData>({
           <Button
             variant="contained"
             size="small"
+            disableElevation
+            disableRipple
             onClick={(e) => setAnchorEl(e.currentTarget)}
-            sx={{
-              height: 32,
-              border: "1px solid gray",
-              boxShadow: "none",
-              bgcolor: "white",
-              color: theme.palette.text.primary,
-              width: { xs: "100%", lg: "auto" },
-            }}
             startIcon={<KeyboardArrowDown fontSize="small" />}
           >
             {title}
@@ -110,6 +103,8 @@ export function DataTableFacetedFilter<TData>({
             onClose={() => setAnchorEl(null)}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             disableScrollLock
+            disableAutoFocusItem
+            disableEnforceFocus
             slotProps={{
               paper: {
                 elevation: 0,
@@ -117,7 +112,6 @@ export function DataTableFacetedFilter<TData>({
                   overflow: "visible",
                   filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                   mt: 1.5,
-                  borderRadius: 2,
                   "& .MuiMenu-list": {
                     padding: "5px 0",
                   },

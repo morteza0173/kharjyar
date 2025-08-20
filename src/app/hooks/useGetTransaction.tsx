@@ -12,8 +12,12 @@ export async function getTransactions(): Promise<Transaction[]> {
 }
 
 export async function saveTransactions(transactions: Transaction[]) {
-  await indexeddb.transactions.clear();
-  await indexeddb.transactions.bulkAdd(transactions);
+  if (!transactions || transactions.length === 0) return;
+  try {
+    await indexeddb.transactions.bulkPut(transactions);
+  } catch (error) {
+    console.error("خطا در ذخیره‌سازی تراکنش‌ها در IndexedDB:", error);
+  }
 }
 
 const useGetTransaction = () => {
@@ -37,7 +41,8 @@ const useGetTransaction = () => {
     queryFn: async () => {
       if (!userId) throw new Error("User ID not found");
       const res = await fetch(`/api/transactions?userId=${userId}`);
-      const data = await res.json();
+      if (!res.ok) throw new Error("خطا در دریافت تراکنش‌ها");
+      const data = (await res.json()) as Transaction[];
       await saveTransactions(data);
       return data as Transaction[];
     },

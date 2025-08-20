@@ -1,8 +1,18 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+"use client";
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import CategoryList from "./CategoryList";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 import { useState } from "react";
-import ResponsiveModal from "../ui/ResponsiveModal";
+import CustomDialog from "../ui/CustomDialog";
 
 const Category = () => {
   const [open, setOpen] = useState(false);
@@ -23,19 +33,24 @@ const Category = () => {
         display={"flex"}
         justifyContent={"space-between"}
       >
-        <ResponsiveModal
-          open={open}
-          setOpen={setOpen}
-          title="افزودن دسته بندی"
-          formId="test"
-          description="تست توضیحات"
-        >
-          <form id="test">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore
-            facere perspiciatis culpa saepe aliquam excepturi libero magnam?
-            Explicab
-          </form>
-        </ResponsiveModal>
+        <CustomDialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>افزودن دسته بندی</DialogTitle>
+          <DialogContent>
+            <form id="test">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore
+              facere perspiciatis culpa saepe aliquam excepturi libero magnam?
+              Explicab
+            </form>
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "space-around", px: 2 }}>
+            <Button variant="contained" fullWidth size="large">
+              ثبت
+            </Button>
+            <Button onClick={() => setOpen(false)} fullWidth size="large">
+              انصراف
+            </Button>
+          </DialogActions>
+        </CustomDialog>
         <Button
           variant="contained"
           sx={{ fontSize: { xs: 8, md: 15 } }}

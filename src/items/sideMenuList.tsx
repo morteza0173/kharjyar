@@ -5,6 +5,7 @@ import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
+import { CategorySharp } from "@mui/icons-material";
 
 export const mainListItems = [
   { text: "صفحه اصلی", icon: <HomeRoundedIcon />, href: "/dashboard" },
@@ -17,6 +18,11 @@ export const mainListItems = [
     text: "تراکنش‌ها",
     icon: <AnalyticsRoundedIcon />,
     href: "/dashboard/transactions",
+  },
+  {
+    text: "بودجه",
+    icon: <CategorySharp />,
+    href: "/dashboard/category",
   },
   {
     text: "هزینه های ثابت",

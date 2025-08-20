@@ -1,5 +1,6 @@
 import {
   AnalyticsRounded,
+  CategorySharp,
   HomeFilled,
   PeopleRounded,
   ViewCompact,
@@ -12,6 +13,11 @@ export const mobileMenuItems = [
     label: "تراکنش‌ها",
     icon: <AnalyticsRounded />,
     link: "/dashboard/transactions",
+  },
+  {
+    label: "بودجه",
+    icon: <CategorySharp />,
+    link: "/dashboard/category",
   },
   { label: "سایر", icon: <ViewCompact />, link: "/test2" },
 ];

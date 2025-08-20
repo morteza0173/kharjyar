@@ -85,6 +85,7 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
                 sx={{
                   width: "fit-content",
                   fontSize: "0.6rem",
+                  borderRadius: 1,
                   opacity: 0.6,
                   ".MuiChip-label": { pt: 0.3 },
                 }}
@@ -92,6 +93,9 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
             </div>
           );
         },
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
         filterFn: (row, _id, value) => {
           const type = row.getValue("type");
           return value.includes(type);
@@ -110,6 +114,9 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
             </p>
           );
         },
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
         filterFn: (row, _id, value) => {
           const type = row.getValue("accountId");
           return value.includes(type);
@@ -125,6 +132,9 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
             </div>
           );
         },
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
         filterFn: (row, id, value) => {
           const rowValue = row.getValue(id) as number;
           const [min, max] = value;
@@ -141,6 +151,9 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
             </div>
           );
         },
+        size: 150,
+        minSize: 100,
+        maxSize: 200,
         filterFn: (row, id, value) => {
           const rowValue = row.getValue(id) as number;
           const [min, max] = value;

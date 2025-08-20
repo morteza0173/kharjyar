@@ -12,8 +12,12 @@ export async function getCategory(): Promise<Category[]> {
 }
 
 export async function saveCategory(category: Category[]) {
-  await indexeddb.category.clear();
-  await indexeddb.category.bulkAdd(category);
+  if (!category || category.length === 0) return;
+  try {
+    await indexeddb.category.bulkPut(category);
+  } catch (error) {
+    console.error("خطا در ذخیره‌سازی دسته بندی‌ها در IndexedDB:", error);
+  }
 }
 
 const useGetCategory = () => {
@@ -37,7 +41,8 @@ const useGetCategory = () => {
     queryFn: async () => {
       if (!userId) throw new Error("User ID not found");
       const res = await fetch(`/api/category?userId=${userId}`);
-      const data = await res.json();
+      if (!res.ok) throw new Error("خطا در دریافت دسته بندی‌ها");
+      const data = (await res.json()) as Category[];
       await saveCategory(data);
       return data as Category[];
     },

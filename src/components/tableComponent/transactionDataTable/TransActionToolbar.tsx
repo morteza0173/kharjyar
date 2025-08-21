@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, Divider } from "@mui/material";
 import { Table } from "@tanstack/react-table";
 import { DataTableFacetedFilter } from "../DataTableFacetedFilter";
@@ -5,6 +6,8 @@ import useGetTransaction from "@/app/hooks/useGetTransaction";
 import { transactionTypeLabels } from "@/lib/dataLabel";
 import useGetAccount from "@/app/hooks/useGetAccount";
 import { AddCircleOutline } from "@mui/icons-material";
+import AddTransactionForm from "./AddTransactionForm";
+import { useState } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -15,6 +18,7 @@ export function TransActionToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const { data: transActionData } = useGetTransaction();
   const { data: AccountData } = useGetAccount();
+  const [openAddTransaction, setOpenAddTransaction] = useState(false);
 
   const transactionType = [
     ...new Map(
@@ -81,9 +85,14 @@ export function TransActionToolbar<TData>({
             disableRipple
             disableElevation
             endIcon={<AddCircleOutline />}
+            onClick={() => setOpenAddTransaction(true)}
           >
             افزودن تراکنش
           </Button>
+          <AddTransactionForm
+            open={openAddTransaction}
+            setOpen={setOpenAddTransaction}
+          />
         </Box>
       </Box>
       <Divider />

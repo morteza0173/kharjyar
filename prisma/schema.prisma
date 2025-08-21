@@ -75,4 +75,5 @@ enum AccountType {
 enum CategoryType {
   INCOME
   EXPENSE
+  TOACCOUNT
 }

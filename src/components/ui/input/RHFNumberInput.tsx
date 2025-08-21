@@ -1,6 +1,5 @@
 import { TextField, InputAdornment } from "@mui/material";
-import { useFormContext, Controller } from "react-hook-form";
-import { CreateAccountSchema } from "@/types/schema";
+import { useFormContext, Controller, FieldValues, Path } from "react-hook-form";
 import { useState } from "react";
 
 const toEnglishDigits = (str: string) =>
@@ -11,24 +10,32 @@ const formatPersianNumber = (numStr: string) => {
   return withCommas.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
 };
 
-export default function RHFNumberInput({ label }: { label: string }) {
+type RHFNumberInputProps<T extends FieldValues> = {
+  name: Path<T>;
+  label: string;
+};
+
+export default function RHFNumberInput<T extends FieldValues>({
+  name,
+  label,
+}: RHFNumberInputProps<T>) {
   const {
     control,
     formState: { errors },
     watch,
-  } = useFormContext<CreateAccountSchema>();
+  } = useFormContext<T>();
 
-  const balance = watch("balance");
+  const value = watch(name);
 
-  const [displayValue, setDisplayValue] = useState<string | number>(balance);
+  const [displayValue, setDisplayValue] = useState<string | number>(value);
 
   return (
     <Controller
-      name="balance"
+      name={name}
       control={control}
       render={({ field: { onChange } }) => (
         <TextField
-          value={displayValue.toLocaleString("fa-IR")}
+          value={displayValue?.toLocaleString("fa-IR")}
           onChange={(e) => {
             const input = e.target.value;
             const englishInput = toEnglishDigits(input).replace(/,/g, "");
@@ -44,8 +51,8 @@ export default function RHFNumberInput({ label }: { label: string }) {
           inputProps={{
             inputMode: "numeric",
           }}
-          error={!!errors.balance}
-          helperText={errors.balance?.message}
+          error={!!errors[name]}
+          helperText={(errors[name]?.message as string) || ""}
         />
       )}
     />

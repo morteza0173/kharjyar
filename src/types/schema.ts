@@ -55,3 +55,40 @@ export const DefaultValuesRegisterSchema: Partial<RegisterSchema> = {
   email: "",
   password: "",
 };
+
+export const addTransactionSchema = z.object({
+  amount: z.number().min(1, "حداقل مقدار تراکنش 1 میباشد"),
+  date: z.date({ required_error: "تاریخ الزامی است" }),
+  type: z.enum(["INCOME", "EXPENSE", "TOACCOUNT"], {
+    errorMap: () => ({
+      message: "نوع تراکنش را باید انتخاب کنید",
+    }),
+  }),
+  description: z
+    .string()
+    .min(5, "حداقل 5 حرف باشد")
+    .max(20, "نباید بیشتر از 20 حرف باشد"),
+  categoryId: z
+    .string({
+      required_error: "انتخاب دسته‌بندی الزامی است",
+      invalid_type_error: "دسته‌بندی معتبر نیست",
+    })
+    .min(1, "یک دسته بندی انتخاب کنید"),
+  accountId: z
+    .string({
+      required_error: "انتخاب دسته‌بندی الزامی است",
+      invalid_type_error: "دسته‌بندی معتبر نیست",
+    })
+    .min(1, "یک دسته بندی انتخاب کنید"),
+});
+
+export type AddTransactionSchema = z.infer<typeof addTransactionSchema>;
+
+export const defaultValuesAddTransaction: Partial<AddTransactionSchema> = {
+  amount: 0,
+  date: new Date(),
+  type: "EXPENSE",
+  description: "",
+  categoryId: "",
+  accountId: "",
+};

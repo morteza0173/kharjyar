@@ -14,6 +14,7 @@ export const accountTypeLabels: Record<string, string> = {
 export const transactionTypeLabels: Record<string, string> = {
   EXPENSE: "هزینه‌ها",
   INCOME: "درآمدها",
+  TOACCOUNT: "به حساب خودم",
 };
 
 export const filterTimeLabels: Record<string, string> = {

@@ -15,6 +15,6 @@ indexeddb.version(1).stores({
   account: "++id , type",
   category: "++id ,type",
   pendingAccount: "++id , type",
-  pendingTransactions: "++id , type",
+  pendingTransactions: "++id, amount, description , type , date , categoryId",
   pendingCategory: "++id , type",
 });

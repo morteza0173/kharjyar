@@ -3,24 +3,29 @@ const toPersianDigits = (value: string | number): string => {
 };
 
 export const formatPrice = (value: number): string => {
+  const isNegative = value < 0;
+  const absValue = Math.abs(value);
   let formatted: string;
 
-  if (value >= 1_000_000_000) {
-    const amount = (value / 1_000_000_000).toFixed(
-      value % 1_000_000_000 === 0 ? 0 : 1
+  if (absValue >= 1_000_000_000) {
+    const amount = (absValue / 1_000_000_000).toFixed(
+      absValue % 1_000_000_000 === 0 ? 0 : 1
     );
     formatted = `${toPersianDigits(amount)} میلیارد تومان`;
-  } else if (value >= 1_000_000) {
-    const amount = (value / 1_000_000).toFixed(value % 1_000_000 === 0 ? 0 : 1);
+  } else if (absValue >= 1_000_000) {
+    const amount = (absValue / 1_000_000).toFixed(
+      absValue % 1_000_000 === 0 ? 0 : 1
+    );
     formatted = `${toPersianDigits(amount)} میلیون تومان`;
-  } else if (value >= 1_000) {
-    const amount = (value / 1_000).toFixed(value % 1_000 === 0 ? 0 : 1);
+  } else if (absValue >= 1_000) {
+    const amount = (absValue / 1_000).toFixed(absValue % 1_000 === 0 ? 0 : 1);
     formatted = `${toPersianDigits(amount)} هزار تومان`;
   } else {
-    formatted = `${toPersianDigits(value)} تومان`;
+    formatted = `${toPersianDigits(absValue)} تومان`;
   }
 
-  return formatted;
+  // اضافه کردن علامت منفی در صورت نیاز
+  return isNegative ? `-${formatted}` : formatted;
 };
 
 export const formatPriceWithCommaFa = (value: number): string => {

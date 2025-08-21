@@ -79,7 +79,10 @@ export function CreateAccountForm() {
           error={!!errors.description}
           helperText={errors.description?.message}
         />
-        <RHFNumberInput label="موجودی اولیه" />
+        <RHFNumberInput<CreateAccountSchema>
+          label="موجودی اولیه"
+          name="balance"
+        />
         <SubmitButton text="ساخت حساب" />
       </Stack>
     </form>

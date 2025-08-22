@@ -27,6 +27,9 @@ import { Transaction } from "@prisma/client";
 import { indexeddb } from "@/lib/indexeddb";
 import { v4 as uuidv4 } from "uuid";
 import { useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 interface AddTransactionFormProps {
   open: boolean;
@@ -60,6 +63,7 @@ const AddTransactionForm = ({ open, setOpen }: AddTransactionFormProps) => {
       ...data,
       id: newId,
       userId: userId,
+      date: dayjs(data.date).utc().toDate(),
     };
 
     await savePendingAccount([indexeddbData]);

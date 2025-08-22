@@ -12,8 +12,8 @@ export interface FilterTime {
 
 const initialState: FilterTime = {
   label: "month",
-  startDate: new Date(dayjs().startOf("months").toDate()).toISOString(),
-  endDate: new Date().toISOString(),
+  startDate: new Date(dayjs().startOf("month").toDate()).toISOString(),
+  endDate: dayjs().endOf("month").endOf("day").toISOString(),
   compareToLabel: "lastMonth",
   compareStartDate: new Date(
     dayjs().startOf("month").subtract(1, "month").toDate()

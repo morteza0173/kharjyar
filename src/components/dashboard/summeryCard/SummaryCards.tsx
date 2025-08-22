@@ -2,13 +2,13 @@
 import { Grid } from "@mui/material";
 import StatCard from "./StatCard";
 import useGetTransaction from "@/app/hooks/useGetTransaction";
-import dayjs from "dayjs";
+import dayjs from "@/lib/dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store/store";
 import { useGetTotalBalance } from "@/app/hooks/useGetTotalBalance";
 
 const SummaryCards = () => {
-  const { data: transactions = [] } = useGetTransaction();
+  const { data: transactions } = useGetTransaction();
   const totalBalance = useGetTotalBalance();
 
   const { startDate, endDate, label, compareStartDate } = useSelector(
@@ -22,8 +22,8 @@ const SummaryCards = () => {
     .filter(
       (tx) =>
         tx.type === "EXPENSE" &&
-        dayjs(tx.date).isAfter(startDate) &&
-        dayjs(tx.date).isBefore(endDate)
+        dayjs(tx.date).isAfter(dayjs(startDate)) &&
+        dayjs(tx.date).isBefore(dayjs(endDate))
     )
     .reduce((sum, tx) => sum + tx.amount, 0);
 
@@ -31,8 +31,8 @@ const SummaryCards = () => {
     .filter(
       (tx) =>
         tx.type === "EXPENSE" &&
-        dayjs(tx.date).isAfter(startOfCompareTime) &&
-        dayjs(tx.date).isBefore(startOfCurrentTime)
+        dayjs(tx.date).isAfter(dayjs(startOfCompareTime)) &&
+        dayjs(tx.date).isBefore(dayjs(startOfCurrentTime))
     )
     .reduce((sum, tx) => sum + tx.amount, 0);
 
@@ -40,8 +40,8 @@ const SummaryCards = () => {
     .filter(
       (tx) =>
         tx.type === "INCOME" &&
-        dayjs(tx.date).isAfter(startDate) &&
-        dayjs(tx.date).isBefore(endDate)
+        dayjs(tx.date).isAfter(dayjs(startDate)) &&
+        dayjs(tx.date).isBefore(dayjs(endDate))
     )
     .reduce((sum, tx) => sum + tx.amount, 0);
 
@@ -49,13 +49,13 @@ const SummaryCards = () => {
     .filter(
       (tx) =>
         tx.type === "INCOME" &&
-        dayjs(tx.date).isAfter(startOfCompareTime) &&
-        dayjs(tx.date).isBefore(startOfCurrentTime)
+        dayjs(tx.date).isAfter(dayjs(startOfCompareTime)) &&
+        dayjs(tx.date).isBefore(dayjs(startOfCurrentTime))
     )
     .reduce((sum, tx) => sum + tx.amount, 0);
 
   const currentMonthTransactions = transactions.filter((tx) =>
-    dayjs(tx.date).isAfter(startOfCurrentTime)
+    dayjs(tx.date).isAfter(dayjs(startOfCurrentTime))
   );
   const totalChangeThisMonth = currentMonthTransactions.reduce(
     (sum, tx) => sum + tx.amount,

@@ -60,14 +60,13 @@ export function TransActionToolbar<TData>({
         display={"flex"}
         alignItems={"center"}
         justifyContent={"space-between"}
-        padding={2}
-        gap={2}
+        padding={1}
       >
-        <Box display={"flex"} gap={2} sx={{ width: "100%" }}>
+        <Box display={"flex"} gap={1} sx={{ width: "100%" }}>
           <DataTableFacetedFilter
             table={table}
             column="type"
-            title="نوع تراکنش"
+            title="نوع"
             options={transactionType || []}
           />
           <DataTableFacetedFilter
@@ -81,7 +80,7 @@ export function TransActionToolbar<TData>({
           display={"flex"}
           sx={{ width: "100%" }}
           justifyContent={"end"}
-          gap={2}
+          gap={1}
         >
           <Button
             variant="contained"

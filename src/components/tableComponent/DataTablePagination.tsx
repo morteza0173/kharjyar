@@ -15,7 +15,7 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex flex-col items-center justify-between space-y-4 px-2 lg:flex-row lg:space-y-0">
+    <div className="flex flex-col items-center justify-between space-y-4 p-2 lg:flex-row lg:space-y-0">
       <div className="flex flex-col items-center gap-0 space-y-2 sm:flex-row sm:space-x-6 sm:space-y-0">
         <div className="text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length > 0 && (
@@ -62,7 +62,7 @@ export function DataTablePagination<TData>({
             <span className="sr-only">صفحه قبلی</span>
             <ChevronRightTwoTone className="h-4 w-4" />
           </Button>
-          <div className="flex items-center justify-center text-sm font-medium">
+          <div className="flex items-center justify-center text-xs font-medium">
             صفحه {table.getState().pagination.pageIndex + 1} از{" "}
             {table.getPageCount()}
           </div>

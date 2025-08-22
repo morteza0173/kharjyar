@@ -10,16 +10,24 @@ const Transactions = () => {
 
   const columns = useTransactionColumns();
 
+  const mobileVisibility = {
+    description: false,
+    type: false,
+  };
   return (
     <Card
       sx={{
         borderRadius: 5,
       }}
     >
-      <CardContent>
+      <CardContent sx={{ padding: { xs: 0 } }}>
         <Box sx={{ paddingX: { xs: 0, md: 2 }, width: "100%" }}>
           <Box>
-            <TransActionDataTable query={queryTransaction} columns={columns}>
+            <TransActionDataTable
+              query={queryTransaction}
+              columns={columns}
+              mobileVisibility={mobileVisibility}
+            >
               {(tabel) => <TransActionToolbar table={tabel} />}
             </TransActionDataTable>
           </Box>

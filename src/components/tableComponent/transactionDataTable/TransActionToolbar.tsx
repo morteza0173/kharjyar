@@ -1,11 +1,11 @@
 "use client";
-import { Box, Button, Divider } from "@mui/material";
+import { Box, Button, Divider, useMediaQuery, useTheme } from "@mui/material";
 import { Table } from "@tanstack/react-table";
 import { DataTableFacetedFilter } from "../DataTableFacetedFilter";
 import useGetTransaction from "@/app/hooks/useGetTransaction";
 import { transactionTypeLabels } from "@/lib/dataLabel";
 import useGetAccount from "@/app/hooks/useGetAccount";
-import { AddCircleOutline } from "@mui/icons-material";
+import { Add, FilterList } from "@mui/icons-material";
 import AddTransactionForm from "./AddTransactionForm";
 import { useState } from "react";
 
@@ -19,6 +19,10 @@ export function TransActionToolbar<TData>({
   const { data: transActionData } = useGetTransaction();
   const { data: AccountData } = useGetAccount();
   const [openAddTransaction, setOpenAddTransaction] = useState(false);
+
+  const theme = useTheme();
+
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const transactionType = [
     ...new Map(
@@ -54,7 +58,6 @@ export function TransActionToolbar<TData>({
     <Box>
       <Box
         display={"flex"}
-        flexDirection={{ xs: "column-reverse", md: "row" }}
         alignItems={"center"}
         justifyContent={"space-between"}
         padding={2}
@@ -76,18 +79,27 @@ export function TransActionToolbar<TData>({
         </Box>
         <Box
           display={"flex"}
-          flexDirection={{ xs: "column-reverse", md: "row" }}
           sx={{ width: "100%" }}
           justifyContent={"end"}
+          gap={2}
         >
           <Button
             variant="contained"
             disableRipple
             disableElevation
-            endIcon={<AddCircleOutline />}
+            endIcon={isSmall ? null : <Add />}
             onClick={() => setOpenAddTransaction(true)}
           >
-            افزودن تراکنش
+            {isSmall ? <Add /> : "افزودن تراکنش"}
+          </Button>
+          <Button
+            variant="contained"
+            disabled
+            disableRipple
+            disableElevation
+            endIcon={isSmall ? null : <FilterList />}
+          >
+            {isSmall ? <FilterList /> : "فیلتر"}
           </Button>
           <AddTransactionForm
             open={openAddTransaction}

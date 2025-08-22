@@ -53,11 +53,12 @@ interface DataTableProps<TData, TValue> {
   query: {
     data?: TData[];
     isError: boolean;
-    isPending: boolean;
+    isPending?: boolean;
     refetch: UseQueryResult<TData[]>["refetch"];
   };
   mobileVisibility?: VisibilityState;
   desktopVisibility?: VisibilityState;
+  pagination?: boolean;
   children?: (table: ReactTableInstance<TData>) => React.ReactNode;
 }
 export function TransActionDataTable<TData extends TransactionRow, TValue>({
@@ -66,6 +67,7 @@ export function TransActionDataTable<TData extends TransactionRow, TValue>({
   mobileVisibility,
   desktopVisibility,
   children,
+  pagination = true,
 }: DataTableProps<TData, TValue>) {
   const { data: queryData, isPending, isError, refetch } = query;
   const [data, setData] = useState<TData[]>([]);
@@ -129,7 +131,7 @@ export function TransActionDataTable<TData extends TransactionRow, TValue>({
   });
 
   return (
-    <div className="space-y-2">
+    <div>
       <TableContainer>
         {children?.(table)}
         <div className="overflow-y-auto">
@@ -290,8 +292,7 @@ export function TransActionDataTable<TData extends TransactionRow, TValue>({
           </Table>
         </div>
       </TableContainer>
-
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   );
 }

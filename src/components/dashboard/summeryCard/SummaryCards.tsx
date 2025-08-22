@@ -1,22 +1,19 @@
 "use client";
 import { Grid } from "@mui/material";
 import StatCard from "./StatCard";
-import useGetAccount from "@/app/hooks/useGetAccount";
 import useGetTransaction from "@/app/hooks/useGetTransaction";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store/store";
+import { useGetTotalBalance } from "@/app/hooks/useGetTotalBalance";
 
 const SummaryCards = () => {
-  const { data: accounts = [] } = useGetAccount();
   const { data: transactions = [] } = useGetTransaction();
+  const totalBalance = useGetTotalBalance();
 
   const { startDate, endDate, label, compareStartDate } = useSelector(
     (state: RootState) => state.filterTime
   );
-
-  const totalBalance =
-    accounts?.reduce((acc, curr) => acc + curr.balance, 0) ?? 0;
 
   const startOfCurrentTime = dayjs(startDate);
   const startOfCompareTime = dayjs(compareStartDate);
@@ -74,8 +71,6 @@ const SummaryCards = () => {
           type="income"
           amount={totalIncomeSelectedTime}
           lastAmount={compareIncome}
-          transactionCount={2}
-          categoryCount={1}
           label={label}
         />
       </Grid>
@@ -84,8 +79,6 @@ const SummaryCards = () => {
           type="expense"
           amount={totalExpenceSelectedTime}
           lastAmount={compareExpense}
-          transactionCount={15}
-          categoryCount={5}
           label={label}
         />
       </Grid>
@@ -94,8 +87,6 @@ const SummaryCards = () => {
           type="balance"
           amount={totalBalance}
           lastAmount={lastMonthBalance}
-          transactionCount={17}
-          categoryCount={6}
           label={label}
         />
       </Grid>

@@ -27,7 +27,7 @@ async function createTransactionApi(transaction: Transaction) {
   formData.append("accountId", transaction.accountId);
   formData.append("description", transaction.description ?? "");
   formData.append("type", transaction.type);
-  formData.append("balance", transaction.amount.toString());
+  formData.append("amount", transaction.amount.toString());
   formData.append("id", transaction.id);
   formData.append("categoryId", transaction.categoryId);
   formData.append("date", transaction.date.toLocaleDateString());

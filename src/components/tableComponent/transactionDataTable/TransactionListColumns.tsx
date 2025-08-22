@@ -2,7 +2,7 @@
 
 import { formatPersianDate } from "@/lib/formatDateToPersian";
 import { formatPriceWithCommaFa } from "@/lib/formatPrice";
-import { Chip } from "@mui/material";
+import { Chip, Typography } from "@mui/material";
 import { Transaction } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
@@ -126,13 +126,25 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
         accessorKey: "amount",
         header: () => <p>مقدار تراکنش</p>,
         cell: ({ row }) => {
+          const type = row.getValue("type");
           return (
             <div className="flex xl:w-full items-center gap-1 flex-wrap">
-              {formatPriceWithCommaFa(row.getValue("amount"))}
+              <Typography
+                color={
+                  type === "INCOME"
+                    ? "success"
+                    : type === "EXPENSE"
+                    ? "error"
+                    : "secondary"
+                }
+                variant="subtitle2"
+              >
+                {formatPriceWithCommaFa(row.getValue("amount"))}
+              </Typography>
             </div>
           );
         },
-        size: 150,
+        size: 130,
         minSize: 100,
         maxSize: 200,
         filterFn: (row, id, value) => {
@@ -151,7 +163,7 @@ export const useTransactionColumns = (): ColumnDef<Transaction>[] => {
             </div>
           );
         },
-        size: 150,
+        size: 100,
         minSize: 100,
         maxSize: 200,
         filterFn: (row, id, value) => {

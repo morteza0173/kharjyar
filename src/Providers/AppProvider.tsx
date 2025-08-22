@@ -5,7 +5,7 @@ import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { useServerInsertedHTML } from "next/navigation";
-import { ThemeProvider } from "@mui/material/styles";
+import { responsiveFontSizes, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -24,6 +24,8 @@ interface RootStyleRegistryProps {
 
 export default function AppProvider({ children }: RootStyleRegistryProps) {
   const [queryClient] = useState(() => new QueryClient());
+
+  const responsiveFontTheme = responsiveFontSizes(theme);
 
   const [{ cache, flush }] = useState<{
     cache: EmotionCache;
@@ -93,7 +95,7 @@ export default function AppProvider({ children }: RootStyleRegistryProps) {
   return (
     <ReduxProvider store={store}>
       <CacheProvider value={cache}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={responsiveFontTheme}>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
             {children}

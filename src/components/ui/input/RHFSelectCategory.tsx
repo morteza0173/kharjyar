@@ -69,6 +69,7 @@ export default function RHFSelectCategory<T extends FieldValues>({
               helperText={fieldState.error?.message}
               InputProps={{
                 ...params.InputProps,
+                readOnly: true,
                 endAdornment: (
                   <>
                     {isPending ? (

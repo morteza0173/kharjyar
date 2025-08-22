@@ -62,8 +62,6 @@ const AddTransactionForm = ({ open, setOpen }: AddTransactionFormProps) => {
       userId: userId,
     };
 
-    console.log(indexeddbData);
-
     await savePendingAccount([indexeddbData]);
 
     queryClient.setQueryData<Transaction[]>(

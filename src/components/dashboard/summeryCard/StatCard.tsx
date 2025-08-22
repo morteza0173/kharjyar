@@ -17,8 +17,6 @@ interface StatCardProps {
   type: StatType;
   amount: number;
   lastAmount: number;
-  transactionCount: number;
-  categoryCount: number;
   label: string;
 }
 
